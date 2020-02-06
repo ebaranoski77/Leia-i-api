@@ -5,6 +5,8 @@ import com.elvisbaranoski.leiai.Leiai.v1.exception.BusinessException;
 import com.elvisbaranoski.leiai.Leiai.v1.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BookServiceImpl implements com.elvisbaranoski.leiai.Leiai.v1.service.BookService {
 
@@ -22,6 +24,21 @@ public class BookServiceImpl implements com.elvisbaranoski.leiai.Leiai.v1.servic
        }
         return repository.save(book);
 
+    }
+
+    @Override
+    public Optional<Book> getById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void delete(Book book) {
+
+    }
+
+    @Override
+    public Book update(Book book) {
+        return null;
     }
 }
 

@@ -1,7 +1,7 @@
 package com.elvisbaranoski.leiai.Leiai.v1.exception;
 
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ public class ApiErrors {
 
     private List<String> errors;
 
-    public ApiErrors(BindingResult bindingResult){
+    public ApiErrors(BindingResult bindingResult) {
 
         this.errors = new ArrayList<>();
         bindingResult.getAllErrors().forEach(error -> this.errors.add(error.getDefaultMessage()));
@@ -20,6 +20,11 @@ public class ApiErrors {
     public ApiErrors(BusinessException ex) {
         this.errors = Arrays.asList(ex.getMessage());
     }
+
+    public ApiErrors(ResponseStatusException ex) {
+        this.errors = Arrays.asList(ex.getReason());
+    }
+
 
     public List<String> getErrors() {
         return errors;

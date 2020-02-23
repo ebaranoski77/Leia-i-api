@@ -1,5 +1,6 @@
 package com.elvisbaranoski.leiai.Leiai.v1.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -14,7 +16,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @Table
-public class Book implements Serializable {
+public class LoanBook implements Serializable {
+
     /**
      *
      */
@@ -22,11 +25,17 @@ public class Book implements Serializable {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
-    private String title;
-    @Column(nullable = false)
-    private String author;
-    @Column(nullable = false)
+    Long id;
+    @Column
     private String isbn;
+    @Column
+    private String customer;
+    @Column
+    private Book book;
+    @Column
+    private LocalDate loanBookDate;
+    @Column
+    private Boolean returnedBook;
+
+
 }

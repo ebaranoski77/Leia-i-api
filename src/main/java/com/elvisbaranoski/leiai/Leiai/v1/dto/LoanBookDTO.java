@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -12,11 +14,9 @@ import lombok.NoArgsConstructor;
 public class LoanBookDTO {
 
 
-    // @NotEmpty
-    //@NotNull
+    @NotEmpty
     private String isbn;
 
-    //  @NotEmpty
-    //@NotNull
+    @NotEmpty
     private String customer;
 }

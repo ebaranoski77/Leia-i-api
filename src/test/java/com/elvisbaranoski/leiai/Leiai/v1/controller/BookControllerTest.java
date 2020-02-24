@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class BookControllerTest {
     //DEFININDO ROTA
-    static String BOOK_API="/api/v1/books";
+    static String BOOK_API = "/api/v1/books";
 
 
     @Autowired
@@ -50,7 +50,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Deve criar um LIVRO com sucesso!")
-    public void createdBookTest()throws Exception{
+    public void createdBookTest() throws Exception {
 
         BookDTO dto = createNewBook();//CONVERTE DTO
 
@@ -126,12 +126,12 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Deve obter informações do LIVRO.")
-    public void getBookDetailsTest()throws Exception {
+    public void getBookDetailsTest() throws Exception {
 
         //CENÁRIO (given)
         Long id = 1L;
 
-        Book book= Book.builder()
+        Book book = Book.builder()
                 .id(id)
                 .title(createNewBook().getTitle())
                 .author(createNewBook().getAuthor())
@@ -158,7 +158,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Deve retornar resource not found quando o LIVRO procurado não exister.")
-    public void bookNotFoundTest()throws Exception {
+    public void bookNotFoundTest() throws Exception {
 
         //CENÁRIO (given)
 
@@ -177,7 +177,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Deve DELETAR um LIVRO .")
-    public void deleteBookTest()throws Exception {
+    public void deleteBookTest() throws Exception {
 
         //CENÁRIO (given)
         //MOCANDO O ID
@@ -196,7 +196,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Deve retornar not found quando não encontrar LIVRO para DELETAR.")
-    public void deleteInexistentBookTest()throws Exception {
+    public void deleteInexistentBookTest() throws Exception {
 
         //CENÁRIO (given)
 
@@ -214,7 +214,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Deve atualizar um LIVRO .")
-    public void updateBookTest()throws Exception {
+    public void updateBookTest() throws Exception {
         //CENÁRIO (given)
         Long id = 1L;
         String json = new ObjectMapper().writeValueAsString(createNewBook());//TRANSFORMANDO QUALQUER OBJETO EM JSON
@@ -240,8 +240,7 @@ public class BookControllerTest {
                 .put(BOOK_API.concat("/" + 1))
                 .content(json)//PASSANDO O CORPO DA REQUISIÇÃO
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                ;
+                .contentType(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
                 .andExpect(status().isOk())
@@ -255,7 +254,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Deve retornar 404 ao atualizar um LIVRO inexistent .")
-    public void updateInexistentBookTest()throws Exception {
+    public void updateInexistentBookTest() throws Exception {
 
         //CENÁRIO (given)
 

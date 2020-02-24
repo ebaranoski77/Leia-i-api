@@ -25,9 +25,10 @@ public class BookRepositoryTest {
 
     @Autowired
     BookRepository repository;
+
     @Test
     @DisplayName("Deve retornar verdadeiro quando existir um livro na base com isbn informado")
-    public  void returnTrueWhenIsbnExists(){
+    public void returnTrueWhenIsbnExists() {
         //CENÁRIO
         String isbn = "123456";
         Book book = createNewBook(isbn);

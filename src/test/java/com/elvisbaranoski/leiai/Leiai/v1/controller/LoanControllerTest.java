@@ -61,7 +61,7 @@ public class LoanControllerTest {
                 .id(1L)
                 .isbn("123456")
                 .build();
-        BDDMockito.given(bookService.getBookByIdIsbn("123456")).willReturn(Optional.of(book));
+        BDDMockito.given(bookService.getBookByIsbn("123456")).willReturn(Optional.of(book));
 
         LoanBook loanBook = LoanBook.builder()
                 .id(1L)
@@ -100,7 +100,7 @@ public class LoanControllerTest {
                 .build();
 
         String json = new ObjectMapper().writeValueAsString(dto);//TRANSFORMANDO QUALQUER OBJETO EM JSON
-        BDDMockito.given(bookService.getBookByIdIsbn("123456")).willReturn(Optional.empty());
+        BDDMockito.given(bookService.getBookByIsbn("123456")).willReturn(Optional.empty());
 
         //MONTANDO UMA REQUISIÇÃO
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders //REQUEST
@@ -134,7 +134,7 @@ public class LoanControllerTest {
                 .id(1L)
                 .isbn("123456")
                 .build();
-        BDDMockito.given(bookService.getBookByIdIsbn("123456")).willReturn(Optional.of(book));
+        BDDMockito.given(bookService.getBookByIsbn("123456")).willReturn(Optional.of(book));
 
         BDDMockito.given(LoanBookservice.save(Mockito.any(LoanBook.class)))
                 .willThrow(new BusinessException("Book allReady loaned"));

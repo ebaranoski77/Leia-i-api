@@ -65,8 +65,9 @@ public class BookServiceImpl implements com.elvisbaranoski.leiai.Leiai.v1.servic
     }
 
     @Override
-    public Optional<Book> getBookByIdIsbn(String isbn) {
-        return null;
+    public Optional<Book> getBookByIsbn(String isbn) {
+
+        return repository.findByIsbn(isbn);
     }
 
 

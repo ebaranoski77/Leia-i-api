@@ -23,7 +23,7 @@ public class LoanController {
     @ResponseStatus(HttpStatus.CREATED)
     public long created(@RequestBody LoanBookDTO dto) {
         Book book = bookService
-                .getBookByIdIsbn(dto.getIsbn())
+                .getBookByIsbn(dto.getIsbn())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book not found for passed isbn"));
 
         LoanBook entity = LoanBook.builder()

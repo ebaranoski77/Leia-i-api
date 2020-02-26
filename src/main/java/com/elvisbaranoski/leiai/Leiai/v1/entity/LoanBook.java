@@ -25,12 +25,13 @@ public class LoanBook implements Serializable {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @Column
     private String isbn;
-    @Column
+    @Column(length = 100)
     private String customer;
-    @Column
+    @JoinColumn(name = "id_book")
+    @ManyToOne
     private Book book;
     @Column
     private LocalDate loanBookDate;

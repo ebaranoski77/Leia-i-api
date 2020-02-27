@@ -3,6 +3,8 @@ package com.elvisbaranoski.leiai.Leiai.v1.controller;
 import com.elvisbaranoski.leiai.Leiai.v1.dto.BookDTO;
 import com.elvisbaranoski.leiai.Leiai.v1.entity.Book;
 import com.elvisbaranoski.leiai.Leiai.v1.service.BookService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/books")
+@Api("Book API")
 public class BookController {
 
     private BookService service;
@@ -30,6 +33,7 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(" creates a books")
     public BookDTO created(@RequestBody @Valid BookDTO dto) {
 
         Book entity = modelMapper.map(dto, Book.class);
@@ -40,6 +44,7 @@ public class BookController {
     }
 
     @GetMapping("{id}")
+    @ApiOperation(" Obtains a book details by id ")
     public BookDTO get(@PathVariable Long id) {
         return service
                 .getById(id)
@@ -51,6 +56,7 @@ public class BookController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(" Delete a book by id ")
     public void delete(@PathVariable Long id) {
         Book book = service.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         service.delete(book);
@@ -59,6 +65,7 @@ public class BookController {
     }
 
     @PutMapping("{id}")
+    @ApiOperation(" Set a new book details by id ")
     public BookDTO update(@PathVariable Long id, BookDTO dto) {
         return service.getById(id).map(book -> {
             book.setAuthor(dto.getAuthor());
@@ -70,6 +77,7 @@ public class BookController {
     }
 
     @GetMapping
+    @ApiOperation(" Finds a book by params ")
     public PageImpl<BookDTO> find(BookDTO dto, Pageable pageRequest) {
 
         Book filter = modelMapper.map(dto, Book.class);

@@ -5,6 +5,7 @@ import com.elvisbaranoski.leiai.Leiai.v1.entity.Book;
 import com.elvisbaranoski.leiai.Leiai.v1.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -56,7 +57,8 @@ public class BookController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(" Delete a book by id ")
+    @ApiOperation(" Deletes a books by id ")
+    @ApiResponse(code = 204, message = "Book succesfuly deleted")
     public void delete(@PathVariable Long id) {
         Book book = service.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         service.delete(book);

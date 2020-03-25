@@ -5,6 +5,8 @@ import com.elvisbaranoski.leiai.Leiai.v1.exception.BusinessException;
 import com.elvisbaranoski.leiai.Leiai.v1.repository.LoanBookRepository;
 import com.elvisbaranoski.leiai.Leiai.v1.service.LoanBookService;
 
+import java.util.Optional;
+
 public class LoanBookServiceImpl implements LoanBookService {
 
     private LoanBookRepository repository;
@@ -19,5 +21,15 @@ public class LoanBookServiceImpl implements LoanBookService {
             throw new BusinessException("Book allReady loaned");
         }
         return repository.save(loanBook);
+    }
+
+    @Override
+    public Optional<LoanBook> getById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public LoanBook update(LoanBook loanBook) {
+        return null;
     }
 }

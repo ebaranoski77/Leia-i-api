@@ -1,6 +1,7 @@
 package com.elvisbaranoski.leiai.Leiai.v1.controller;
 
 import com.elvisbaranoski.leiai.Leiai.v1.dto.LoanBookDTO;
+import com.elvisbaranoski.leiai.Leiai.v1.dto.ReturnedLoanBookDTO;
 import com.elvisbaranoski.leiai.Leiai.v1.entity.Book;
 import com.elvisbaranoski.leiai.Leiai.v1.entity.LoanBook;
 import com.elvisbaranoski.leiai.Leiai.v1.exception.BusinessException;
@@ -21,19 +22,20 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = {LoanController.class})
+@WebMvcTest(controllers = {LoanBookController.class})
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class LoanControllerTest {
+public class LoanBookControllerTest {
 
     //DEFININDO ROTA
     static String LOADBOOK_API = "/api/v1/loadBooks";
@@ -45,7 +47,7 @@ public class LoanControllerTest {
     private BookService bookService;
 
     @MockBean
-    private LoanBookService LoanBookservice;
+    private LoanBookService loanBookservice;
 
     @Test
     @DisplayName("Deve realizar um emprestimo de LIVRO com sucesso!")
@@ -69,16 +71,16 @@ public class LoanControllerTest {
                 .book(book)
                 .loanBookDate(LocalDate.now())
                 .build();
-        BDDMockito.given(LoanBookservice.save(Mockito.any(LoanBook.class))).willReturn(loanBook);
+        BDDMockito.given(loanBookservice.save(Mockito.any(LoanBook.class))).willReturn(loanBook);
 
         String json = new ObjectMapper().writeValueAsString(dto);//TRANSFORMANDO QUALQUER OBJETO EM JSON
 
         //MONTANDO UMA REQUISIÇÃO
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders //REQUEST
-                .post(LOADBOOK_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);//PASSANDO O CORPO DA REQUISIÇÃO
+        MockHttpServletRequestBuilder request = //REQUEST
+                post(LOADBOOK_API)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(json);//PASSANDO O CORPO DA REQUISIÇÃO
 
         //REQUISIÇÃO
 
@@ -103,11 +105,11 @@ public class LoanControllerTest {
         BDDMockito.given(bookService.getBookByIsbn("123456")).willReturn(Optional.empty());
 
         //MONTANDO UMA REQUISIÇÃO
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders //REQUEST
-                .post(LOADBOOK_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);//PASSANDO O CORPO DA REQUISIÇÃO
+        MockHttpServletRequestBuilder request = //REQUEST
+                post(LOADBOOK_API)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(json);//PASSANDO O CORPO DA REQUISIÇÃO
 
         //REQUISIÇÃO
 
@@ -136,15 +138,15 @@ public class LoanControllerTest {
                 .build();
         BDDMockito.given(bookService.getBookByIsbn("123456")).willReturn(Optional.of(book));
 
-        BDDMockito.given(LoanBookservice.save(Mockito.any(LoanBook.class)))
+        BDDMockito.given(loanBookservice.save(Mockito.any(LoanBook.class)))
                 .willThrow(new BusinessException("Book allReady loaned"));
 
         //MONTANDO UMA REQUISIÇÃO
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders //REQUEST
-                .post(LOADBOOK_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(json);//PASSANDO O CORPO DA REQUISIÇÃO
+        MockHttpServletRequestBuilder request = //REQUEST
+                post(LOADBOOK_API)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(json);//PASSANDO O CORPO DA REQUISIÇÃO
 
         //REQUISIÇÃO
 
@@ -153,6 +155,34 @@ public class LoanControllerTest {
                 .andExpect(status().isBadRequest())  //PASSANDO OS MATCHERS VERIFICADORES
                 .andExpect(jsonPath("errors", hasSize(1)))
                 .andExpect(jsonPath("errors[0]").value("Book allReady loaned"))
+        ;
+    }
+
+    @Test
+    @DisplayName("Deve retornar um LIVRO.")
+    public void returnedBookTest() throws Exception {
+
+        //CENÁRIO
+        ReturnedLoanBookDTO dto = ReturnedLoanBookDTO
+                .builder()//CONVERTE DTO
+                .returned(true)
+                .build();
+        BDDMockito.given(loanBookservice.getById(Mockito.anyLong()))
+                .willReturn(Optional.of(LoanBook.builder()
+                        .id(1L)
+                        .build()));
+
+        //MONTANDO UMA REQUISIÇÃO
+
+        String json = new ObjectMapper().writeValueAsString(dto);//TRANSFORMANDO QUALQUER OBJETO EM JSON
+        //REQUISIÇÃO
+
+        mvc
+                .perform(patch(LOADBOOK_API.concat("/1"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(json)//PASSANDO O CORPO DA REQUISIÇÃO
+                ).andExpect(status().isOk())  //PASSANDO OS MATCHERS VERIFICADORES
         ;
     }
 

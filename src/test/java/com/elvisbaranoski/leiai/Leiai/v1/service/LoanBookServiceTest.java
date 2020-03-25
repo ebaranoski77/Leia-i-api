@@ -23,7 +23,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 public class LoanBookServiceTest {
+
     LoanBookService service;
+
     @MockBean
     LoanBookRepository repository;
 

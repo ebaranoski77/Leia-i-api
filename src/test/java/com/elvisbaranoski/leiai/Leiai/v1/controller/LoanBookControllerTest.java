@@ -167,10 +167,11 @@ public class LoanBookControllerTest {
                 .builder()//CONVERTE DTO
                 .returned(true)
                 .build();
+        LoanBook loanBook = LoanBook.builder()
+                .id(1L)
+                .build();
         BDDMockito.given(loanBookservice.getById(Mockito.anyLong()))
-                .willReturn(Optional.of(LoanBook.builder()
-                        .id(1L)
-                        .build()));
+                .willReturn(Optional.of(loanBook));
 
         //MONTANDO UMA REQUISIÇÃO
 
@@ -184,6 +185,8 @@ public class LoanBookControllerTest {
                         .content(json)//PASSANDO O CORPO DA REQUISIÇÃO
                 ).andExpect(status().isOk())  //PASSANDO OS MATCHERS VERIFICADORES
         ;
+
+        Mockito.verify(loanBookservice, Mockito.times(1)).update(loanBook);
     }
 
 }

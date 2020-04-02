@@ -189,4 +189,33 @@ public class LoanBookControllerTest {
         Mockito.verify(loanBookservice, Mockito.times(1)).update(loanBook);
     }
 
+    @Test
+    @DisplayName("Deve retornar 404 caso devolver um LIVRO inexistente.")
+    public void returnedInexistentBookTest() throws Exception {
+
+        //CENÁRIO
+        ReturnedLoanBookDTO dto = ReturnedLoanBookDTO
+                .builder()//CONVERTE DTO
+                .returned(true)
+                .build();
+
+        //MONTANDO UMA REQUISIÇÃO
+        String json = new ObjectMapper().writeValueAsString(dto);//TRANSFORMANDO QUALQUER OBJETO EM JSON
+
+        BDDMockito.given(loanBookservice.getById(Mockito.anyLong()))
+                .willReturn(Optional.empty());
+
+
+        //REQUISIÇÃO
+
+        mvc
+                .perform(patch(LOADBOOK_API.concat("/1"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(json)//PASSANDO O CORPO DA REQUISIÇÃO
+                ).andExpect(status().isNotFound())  //PASSANDO OS MATCHERS VERIFICADORES
+        ;
+
+    }
+
 }

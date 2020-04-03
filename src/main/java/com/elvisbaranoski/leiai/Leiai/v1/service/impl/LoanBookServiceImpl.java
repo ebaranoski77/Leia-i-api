@@ -30,6 +30,6 @@ public class LoanBookServiceImpl implements LoanBookService {
 
     @Override
     public LoanBook update(LoanBook loanBook) {
-        return null;
+        return repository.save(loanBook);
     }
 }
